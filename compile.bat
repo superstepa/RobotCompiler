@@ -1,3 +1,3 @@
 del *.class
-javac -d . *.java
+javac -d . ./src/*.java
 jar cmf BotRunner.mf Runner.jar ./bot/*.class
