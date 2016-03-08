@@ -1,2 +1,2 @@
-Manifest-Version: 1.0
-Main-Class: bot.BotRunner
+Manifest-Version: 1.1
+Main-Class: com.superstepa.bot.BotRunner

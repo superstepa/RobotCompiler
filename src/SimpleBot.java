@@ -1,4 +1,4 @@
-package bot;
+package com.superstepa.bot;
 
 import java.awt.Robot;
 import java.awt.event.InputEvent;
