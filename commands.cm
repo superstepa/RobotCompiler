@@ -1,5 +1,5 @@
 //This is a comment
 WAIT 3000
 CLICK 400 500
-TYPE RIP
+TYPE TEST
 ENTER

@@ -2,13 +2,15 @@ package com.superstepa.bot;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Arrays;
+
+import java.util.Map;
+import java.util.HashMap;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class CommandParser{
-    public static Pattern[] patterns ={
+    private static Pattern[] patterns ={
         Pattern.compile("(CLICK) ([0-9]*) ([0-9]*)"),
         Pattern.compile("(GOTO) ([0-9]*) ([0-9]*)"),
         Pattern.compile("(WAIT) ([0-9]*)"),
@@ -16,27 +18,29 @@ public class CommandParser{
         Pattern.compile("(ENTER)")
     };
 
-    //public enum patterns {CLICK, GOTO, WAIT, TYPE, ENTER};
+    //Map initialization has to take place inside a method.
+    public static Map<String,String> commands = createMap();
+    private static Map<String, String> createMap(){
+        Map<String, String> result = new HashMap<String,String>();
+        result.put("CLICK","clickPoint");
+        result.put("GOTO","mouseMove");
+        result.put("WAIT","delay");
+        result.put("TYPE","typeString");
+        result.put("ENTER","enter");
+        return result;
+    }
 
+    //Proof of concept, will change later.
     public static void parseCommand(String command, String[] args){
-        String arguments = Arrays.toString(args);
-        switch(command){
-            case "CLICK":
-                System.out.println("Clicking at " + arguments);
-                break;
-            case "GOTO":
-                System.out.println("Going to " + arguments);
-                break;
-            case "WAIT":
-                System.out.println("Waiting for " + arguments);
-                break;
-            case "TYPE":
-                System.out.println("Typing " + arguments);
-                break;
-            }
+        String arg_str = "";
+        for (int i = 0; i < args.length; i++){
+            arg_str = String.format("%s,%s",arg_str,args[i]);
         }
+        arg_str = (arg_str.length() > 0) ? arg_str.substring(1) : arg_str; //Remove the leading comma if there are arguments.
+        System.out.printf("%s(%s)\n", commands.get(command), arg_str);
+    }
 
-    public static void readFile (String filename){
+    public static void readLines (String filename){
         try (BufferedReader br = new BufferedReader(new FileReader(filename))){
             String line;
             while ((line = br.readLine()) != null){
@@ -46,10 +50,12 @@ public class CommandParser{
         catch (Exception e){
             System.out.println(e);
         }
-
     }
-
-    public static void processLine(String line){
+    /**
+     *Separates a given line into the command and the parameters.
+     *
+     */
+    private static void processLine(String line){
         for (Pattern p: patterns){
             Matcher matcher = p.matcher(line);
             while (matcher.find()){
@@ -57,7 +63,7 @@ public class CommandParser{
                 String[] strArgs = new String[count-1];
                  /*
                     All regex patterns have at least 1 group capture
-                    Therefore the first group capture will be the command itself
+                    Therefore the first group capture will always be the command itself
                     Captures are 1 indexed.
                 */
                 String command = matcher.group(1);
