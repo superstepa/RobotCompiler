@@ -5,10 +5,13 @@ import java.util.regex.Pattern;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+
+//The spaghetti is spilling out of my pockets. I'll need to rework this later.
 public class CommandParser{
     private static Pattern[] patterns ={
         Pattern.compile("(CLICK) ([0-9]*) ([0-9]*)"),
@@ -31,31 +34,33 @@ public class CommandParser{
     }
 
     //Proof of concept, will change later.
-    public static void parseCommand(String command, String[] args){
+    public static String parseCommand(String command, String[] args){
         String arg_str = "";
         for (int i = 0; i < args.length; i++){
             arg_str = String.format("%s,%s",arg_str,args[i]);
         }
         arg_str = (arg_str.length() > 0) ? arg_str.substring(1) : arg_str; //Remove the leading comma if there are arguments.
-        System.out.printf("%s(%s)\n", commands.get(command), arg_str);
+        return String.format("bot.%s(%s);\n", commands.get(command), arg_str);
     }
 
-    public static void readLines (String filename){
+    public static String[] readLines (String filename){
+        ArrayList<String> result = new ArrayList<String>();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))){
             String line;
             while ((line = br.readLine()) != null){
-                processLine(line);
+                result.add(processLine(line));
             }
         }
         catch (Exception e){
             System.out.println(e);
         }
+        return result.toArray(new String[result.size()]);
     }
     /**
      *Separates a given line into the command and the parameters.
      *
      */
-    private static void processLine(String line){
+    private static String processLine(String line){
         for (Pattern p: patterns){
             Matcher matcher = p.matcher(line);
             while (matcher.find()){
@@ -70,8 +75,9 @@ public class CommandParser{
                 for (int i=2; i <=count;i++){
                     strArgs[i - 2] = matcher.group(i);
                 }
-                parseCommand(command, strArgs);
+                return parseCommand(command, strArgs);
             }
         }
+    return "";
     }
 }
