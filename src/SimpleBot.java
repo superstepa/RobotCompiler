@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 
 public class SimpleBot extends Robot{
     private static final int EVENT_LMB = InputEvent.BUTTON1_MASK;
-    private static final int EVENT_RMB = InputEvent.BUTTON2_MASK;
+    private static final int EVENT_RMB = InputEvent.BUTTON3_MASK;
     private static final int EVENT_ENTER = KeyEvent.VK_ENTER;
     private static final int EVENT_SHIFT = KeyEvent.VK_SHIFT;
     private static final int EVENT_CAPSLOCK = KeyEvent.VK_CAPS_LOCK;
@@ -79,4 +79,6 @@ public class SimpleBot extends Robot{
             typeChar(ch);
         }
     }
+
+    //{0}
 }

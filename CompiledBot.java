@@ -15,7 +15,8 @@ public class CompiledBot extends Robot{
     public static void main(String[] args){
         try{
             CompiledBot bot = new CompiledBot();
-            {0}
+            //This is a comment
+ bot.clickPoint(800,600); bot.rightClick(); bot.typeString("THIS IS ATEST");
         }
         catch (Exception e){
             e.printStackTrace();
