@@ -13,8 +13,9 @@ import java.io.FileReader;
 
 //The spaghetti is spilling out of my pockets. I'll need to rework this later.
 public class CommandParser{
-    private static Pattern[] patterns ={
+    private static final Pattern[] PATTERNS ={
         Pattern.compile("(CLICK) ([0-9]*) ([0-9]*)"),
+        Pattern.compile("(RIGHTCLICK) ([0-9]*) ([0-9]*)"),
         Pattern.compile("(GOTO) ([0-9]*) ([0-9]*)"),
         Pattern.compile("(WAIT) ([0-9]*)"),
         Pattern.compile("(TYPE) ([^\n]*)"),
@@ -24,8 +25,9 @@ public class CommandParser{
     //Map initialization has to take place inside a method.
     public static Map<String,String> commands = createMap();
     private static Map<String, String> createMap(){
-        Map<String, String> result = new HashMap<String,String>();
+        Map<String, String> result = new HashMap<>();
         result.put("CLICK","clickPoint");
+        result.put("RIGHTCLICK","clickPoint");
         result.put("GOTO","mouseMove");
         result.put("WAIT","delay");
         result.put("TYPE","typeString");
@@ -36,15 +38,15 @@ public class CommandParser{
     //Proof of concept, will change later.
     public static String parseCommand(String command, String[] args){
         String arg_str = "";
-        for (int i = 0; i < args.length; i++){
-            arg_str = String.format("%s,%s",arg_str,args[i]);
+        for (String arg : args) {
+            arg_str = String.format("%s,%s", arg_str, arg);
         }
         arg_str = (arg_str.length() > 0) ? arg_str.substring(1) : arg_str; //Remove the leading comma if there are arguments.
         return String.format("bot.%s(%s);\n", commands.get(command), arg_str);
     }
 
     public static String[] readLines (String filename){
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))){
             String line;
             while ((line = br.readLine()) != null){
@@ -61,7 +63,7 @@ public class CommandParser{
      *
      */
     private static String processLine(String line){
-        for (Pattern p: patterns){
+        for (Pattern p: PATTERNS){
             Matcher matcher = p.matcher(line);
             while (matcher.find()){
                 int count = matcher.groupCount();

@@ -9,9 +9,9 @@ public class BotRunner{
 
             TemplateGenerator gen = new TemplateGenerator();
             JarCompiler compiler = new JarCompiler();
-            String[] test = CommandParser.readLines(args[0]);
+            String[] lines = CommandParser.readLines(args[0]);
             String command = "";
-            for (String s: test){
+            for (String s: lines){
                 command = String.format("%s\n%s\n", command, s);
             }
             gen.writeFile(gen.replaceLines("./templates/robot.jtemplate",command));

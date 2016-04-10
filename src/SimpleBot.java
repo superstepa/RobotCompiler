@@ -37,6 +37,16 @@ public class SimpleBot extends Robot{
         delay(min_delay);
     }
 
+    public void rightClickPoint(int x, int y, int delay){
+        mouseMove(x,y);
+        rightClick();
+        delay(delay);
+    }
+
+    public void rightClickPoint(int x, int y){
+        rightClickPoint(x,y,min_delay);
+    }
+
 
     public void clickPoint(int x, int y, int delay){
         mouseMove(x,y);
@@ -79,6 +89,4 @@ public class SimpleBot extends Robot{
             typeChar(ch);
         }
     }
-
-    //{0}
 }

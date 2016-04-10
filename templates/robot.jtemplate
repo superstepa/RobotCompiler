@@ -12,6 +12,15 @@ public class CompiledBot extends Robot{
 
     private int min_delay = 200;
 
+    public CompiledBot() throws Exception {
+        super();
+    }
+
+    public CompiledBot(int delay) throws Exception{
+        super();
+        min_delay = delay;
+    }
+
     public static void main(String[] args){
         try{
             CompiledBot bot = new CompiledBot();
@@ -22,15 +31,6 @@ public class CompiledBot extends Robot{
         }
 
     }
-    public CompiledBot() throws Exception {
-        super();
-    }
-
-    public CompiledBot(int delay) throws Exception{
-        super();
-        min_delay = delay;
-    }
-
     public void leftClick(){
         mousePress(EVENT_LMB);
         delay(min_delay);
@@ -43,6 +43,16 @@ public class CompiledBot extends Robot{
         delay(min_delay);
         mouseRelease(EVENT_RMB);
         delay(min_delay);
+    }
+
+    public void rightClickPoint(int x, int y, int delay){
+        mouseMove(x,y);
+        rightClick();
+        delay(delay);
+    }
+
+    public void rightClickPoint(int x, int y){
+        rightClickPoint(x,y,min_delay);
     }
 
 
@@ -88,4 +98,5 @@ public class CompiledBot extends Robot{
         }
     }
 
+    //{0}
 }
